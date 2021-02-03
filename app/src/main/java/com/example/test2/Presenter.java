@@ -43,7 +43,7 @@ public class Presenter extends ViewModel {
                         callback.onNetworksLoaded(response.body().getNetworks(), null);
                     }
                 }
-
+                
                 @Override
                 public void onFailure(Call<NetworkList> call, Throwable t) {
                     callback.onNetworksLoaded(null, new Exception(t.getLocalizedMessage()));

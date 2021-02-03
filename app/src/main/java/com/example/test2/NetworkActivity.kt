@@ -1,5 +1,7 @@
 package com.example.test2
 
+
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -20,8 +22,11 @@ class NetworkActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recycler)
 
         recyclerView.adapter = NetworkAdapter(::networkClicked)
+
 //        val snapHelper: SnapHelper = LinearSnapHelper()
 //        snapHelper.attachToRecyclerView(recyclerView)
+
+
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val presenter = ViewModelProvider(this).get(Presenter::class.java)
@@ -36,11 +41,9 @@ class NetworkActivity : AppCompatActivity() {
 
 
     private fun networkClicked(network: Network) {
-        Log.d("Test", "Network clicked")
-        ViewModelProvider(this).get(Presenter::class.java).loadStations(network.id
-        ) { networks, error -> {
-
-        } }
-
+        val intent = Intent(this, StationsActivity::class.java).apply {
+            putExtra(StationsActivity.STATION_ID_BUNDLE, network.id)
+        }
+        startActivity(intent)
     }
 }
