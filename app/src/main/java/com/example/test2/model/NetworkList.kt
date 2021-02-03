@@ -20,7 +20,12 @@ package com.example.test2.model
 
  Podriamos usar  @Json(name = "IsOnline")val online: String si no nos gustase el nombre del parametro
  */
+
+
+
 data class Location(val city: String, val country: String, val latitude: Double, val longitude: Double)
 data class Network(val company: Any, val href: String, val id: String, val name: String, val location: Location)
 data class NetworkList(val networks: List<Network>)
+
+
 
