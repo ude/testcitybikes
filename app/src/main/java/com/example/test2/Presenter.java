@@ -40,6 +40,8 @@ public class Presenter extends ViewModel {
                 @Override
                 public void onResponse(Call<NetworkList> call, Response<NetworkList> response) {
                     if (response.body()!=null && response.isSuccessful()){
+                        networks.clear();
+                        networks.addAll(response.body().getNetworks());
                         callback.onNetworksLoaded(response.body().getNetworks(), null);
                     }
                 }
@@ -53,15 +55,22 @@ public class Presenter extends ViewModel {
     }
 
     public void loadStations(String networkId, StationDetailLoadedCallback callback){
+        List<StationModel> filteredList = new ArrayList();
         networkAPI.getStations(networkId).enqueue(new Callback<StationResponse>() {
             @Override
             public void onResponse(Call<StationResponse> call, Response<StationResponse> response) {
+                filteredList.clear();
+                for (StationModel model : response.body().getNetwork().getStations()){
+                    if (model.getLatitude() != 0 && model.getLongitude()!=0 && model.getName() != null){
+                        filteredList.add(model);
+                    }
+                }
                 callback.detailsLoaded(response.body().getNetwork().getStations(), null);
             }
 
             @Override
             public void onFailure(Call<StationResponse> call, Throwable t) {
-                Log.d("TEST", "Test");
+             callback.detailsLoaded(null, new Exception(t.getCause()));
             }
         });
     }
